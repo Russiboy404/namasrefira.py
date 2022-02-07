@@ -1,0 +1,64 @@
+try:
+ import requests,uuid,instaloader,os
+except ModuleNotFoundError:
+ os.system('pip install instaloader')
+ os.system('pip install requests')
+E = '\033[1;31m'
+B = '\033[2;36m'
+G = '\033[1;32m'
+P = '\u001b[35m'
+S = '\033[1;33m'
+logo=(f"""{E}==========Fira-Coin-Scraper=========
+{B}[+] TeleGram : Russiboy
+{G}[+] Youtube    : No 
+{S}[+] instagram Russiboy404
+{E}====================================""")
+print(logo)
+def Fira(id,user,firauser):
+ url = "https://namasrefirapy.herokuapp.com/"
+ data = {'inscoo':'Cookie: mid=HRIQ7WwnzU2PUcNtAiaxZ270DGKoFQIx; ig_5FD526AC-4AF9-42F2-BE29-2ED0DD58BE15; ig_nrcb=1; csrftoken=HRIQ7WwnzU2PUcNtAiaxZ270DGKoFQIx; ds_user_id=43318807349; sessionid=43318807349:REuD17F0fGO9Mk:1; shbid="4365\05451672997685\0541675799729:01f72fec75330b69b4e04c293d6b8aabf3c12194171abc150940d93601cc138f6ab9732c"; shbts="1644263729\05451672997685\0541675799729:01f777e75c3a3a8373e6b59d7fb074ffe9b3beb8c54d202f39787b5709faea767cb784c2"; rur="LDC\05443318807349\0541675800733:01f7a89eba4887d88ea0ec4bcd556432328894b2cfbd9ff2d05544f6a4bd8c1afd96d635"',
+ 'pkx':id,
+ 'uname':firauser,
+ 'submit':'submit'}
+ namaste=requests.post(url,data=data)
+ info=str(namaste.text)
+ like=str(info.split('Like Coin- :')[1])
+ likecoin=like.split('<br>')[0]
+ follow=str(info.split('Follow Coin- :')[1])
+ followcoin=follow.split('\n')[0]
+ inf=(f"""
+{E}ID ==> {id} {E}User ==> {user}
+{B}Follow Coin ==>{followcoin} {B}Like Coin ==>{likecoin}""")
+ if 'Status- : ok' in info:
+  print(f"""{G}Send To ==> {firauser}
+{inf}
+{G}Success""")
+ if 'Status- : nok' in info:
+  print(f"""{inf}
+{P}Not Success""")
+ if 'Blocked' in info:
+  print(f"""{E}Blocked User""")
+ else:
+  print(inf)
+def UserID(user,firauser):
+ L = instaloader.Instaloader()
+ profile = str(instaloader.Profile.from_username(L.context,user))
+ idd=str(profile.split(')>')[0])
+ id=idd.split(' (')[1]
+ Fira(id,user,firauser)
+def Start():
+ os.system('clear')
+ print(logo)
+ firauser=input(B+"Enter Your Fira UserName : ")
+ USER = input(G+"Enter Insta UserName For Login : ")
+ PASSWORD =input(S+"Enter Insta PassWord For Login : ")
+ L = instaloader.Instaloader()
+ L.login(USER, PASSWORD)
+ link1 = input(E+"Enter Post Half Link : ")
+ Post = instaloader.Post.from_shortcode(L.context, link1)
+ for like in Post.get_likes():
+   user=like.username
+   UserID(user,firauser)
+os.system('clear')
+print(logo)
+Start()
